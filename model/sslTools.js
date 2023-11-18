@@ -4,6 +4,7 @@ import node_openssl from 'node-openssl-cert';
 const openssl = new node_openssl();
 
 class sslTools {
+  //No need declaring it as it is not needed
   //constructor() {}
 
   // Method to generate private key
@@ -119,5 +120,5 @@ class sslTools {
   }
 }
 
-//openssl.createPKCS12();
+
 export default sslTools;

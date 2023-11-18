@@ -1,23 +1,20 @@
-//import express from 'express';
+import express from 'express';
 
-import sslTools from './model/sslTools.js';
-//const sslTools = require('./model/sslTools');
+import sslRoutes from './routes/sslRoutes.js';
+import errorController from './controller/errorController.js';
 
-//const app = express();
+const app = express();
 
-//Middleware to accept json payload
-//app.use(express.json());
+//Middleware to accept json based payload
+app.use(express.json());
 
-//Routes.
-//const tools = new sslTools();
-//await tools.generateUnencryptedPrivatekey();
-//await tools.generateCSR('gbb.com.ng', 'NG', 'FCT', 'Abuja', 'GBB', 'Cloud Ops', 'ktasie@gmail.com');
-//await tools.generateSelfSigned();
-//console.log(tools.selfSign);
-//const pfx = await tools.convertPKCS12();
-//console.log(tools);
-//console.log(cert.cert);
 
-// app.listen('3000', () => {
-//   console.log('App is running on port 3000');
-// });
+// Routes
+app.use('/api/v1', sslRoutes);
+app.all('*', errorController);
+
+const port = process.env.PORT || 3000;
+
+app.listen('3000', () => {
+  console.log(`App is running on port ${port}`);
+});
