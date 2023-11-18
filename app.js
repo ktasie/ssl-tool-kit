@@ -9,13 +9,15 @@ import sslTools from './model/sslTools.js';
 //app.use(express.json());
 
 //Routes.
-const tools = new sslTools();
+//const tools = new sslTools();
+//await tools.generateUnencryptedPrivatekey();
+//await tools.generateCSR('gbb.com.ng', 'NG', 'FCT', 'Abuja', 'GBB', 'Cloud Ops', 'ktasie@gmail.com');
+//await tools.generateSelfSigned();
+//console.log(tools.selfSign);
+//const pfx = await tools.convertPKCS12();
+//console.log(tools);
+//console.log(cert.cert);
 
-//const a = await tools._generateUnencryptedPrivatekey();
-//const a = await tools.generateCSR('NG', 'FCT', 'Abuja', 'GBB', 'Cloud Ops', 'example.com', 'ktasie@gmail.com');
-const a = await tools.generateCSR('NG', 'FCT', 'Abuja', 'GBB', 'Cloud Ops', 'example.com', 'ktasie@gmail.com');
-console.log(tools);
-//console.log(cmd, key);
 // app.listen('3000', () => {
 //   console.log('App is running on port 3000');
 // });

@@ -4,14 +4,10 @@ import node_openssl from 'node-openssl-cert';
 const openssl = new node_openssl();
 
 class sslTools {
-  constructor() {
-    this.unencryptkey;
-    this.csr;
-    this.selfSign;
-  }
+  //constructor() {}
 
-  // Private method, to be called only within this class.
-  _generateUnencryptedPrivatekey() {
+  // Method to generate private key
+  generateUnencryptedPrivatekey() {
     return new Promise((resolve, reject) => {
       openssl.generateRSAPrivateKey(
         {},
@@ -19,47 +15,109 @@ class sslTools {
           this.unencryptkey = key;
           if (err) reject(err);
           resolve({ key, cmd });
-        }.bind(this)
+        }.bind(this),
       );
     });
   }
 
   // Generate CSR
-  async generateCSR(countryName, stateOrProvinceName, localityName, organizationName, organizationalUnitName, commonName, emailAddress) {
+  async generateCSR(
+    commonName,
+    countryName,
+    stateOrProvinceName,
+    localityName,
+    organizationName,
+    organizationalUnitName,
+    emailAddress,
+    key,
+  ) {
     const csroptions = {
       hash: 'sha512',
+      days: '600',
       subject: {
+        commonName,
         countryName,
         stateOrProvinceName,
         localityName,
         organizationName,
         organizationalUnitName,
-        commonName,
         emailAddress,
       },
+      extensions: {
+        SANs: {
+          DNS: [commonName, `www.${commonName}`],
+        },
+      },
     };
-    this.unencryptkey = await this._generateUnencryptedPrivatekey();
-    //await this._generateUnencryptedPrivatekey();
-    //const key = JSON.stringify(this.key.key);
-    //console.log(this.unencyptkey);
-    return new Promise(async (resolve, reject) => {
+    //confirm if a key was passed.
+    if (key !== undefined) {
+      this.unencryptkey = key;
+    }
+
+    return new Promise((resolve, reject) => {
       openssl.generateCSR(
         csroptions,
-        this.unencryptkey.key,
+        this.unencryptkey,
         false,
         function (err, csr, cmd) {
           //Inject csr into Obj
           this.csr = csr;
           if (err) reject(err);
-          resolve({ cmd, csr, unencryptkey: `${this.unencryptkey.key}` });
-        }.bind(this)
+          resolve({ csr, cmd });
+        }.bind(this),
       );
     });
   }
 
-  _generateSelfSigned() {}
+  generateSelfSigned(csr, unencryptkey) {
+    if (csr !== undefined) {
+      this.csr = csr;
+    }
 
-  convertPCKS() {}
+    if (unencryptkey !== undefined) {
+      this.unencryptkey = unencryptkey;
+    }
+    return new Promise((resolve, reject) => {
+      //console.log(this);
+      openssl.selfSignCSR(
+        this.csr,
+        { days: 600 },
+        this.unencryptkey,
+        false,
+        function (err, cert, cmd) {
+          this.selfSign = cert;
+          if (err) reject(err);
+          resolve({ cert, cmd });
+        }.bind(this),
+      );
+    });
+  }
+
+  convertPKCS12(cert, key) {
+    if (cert !== undefined) {
+      this.selfSign = cert;
+    }
+    if (key !== undefined) {
+      this.unencryptkey = cert;
+    }
+    return new Promise((resolve, reject) => {
+      //console.log(this.selfSign);
+      openssl.createPKCS12(
+        this.selfSign,
+        this.unencryptkey,
+        false,
+        false,
+        this.selfSign,
+        function (err, pfx, cmd) {
+          this.pfx = pfx;
+          if (err) reject(err);
+          // pfx outputs buffer code... needs to be fixed.
+          resolve({ pfx, cmd });
+        }.bind(this),
+      );
+    });
+  }
 }
 
+//openssl.createPKCS12();
 export default sslTools;
