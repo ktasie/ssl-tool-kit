@@ -1,0 +1,209 @@
+/* eslint-disable allowNamedFunctions */
+
+const custom_content = document.getElementById('custom_content');
+
+document.getElementById('btn_generate_ssl').onclick = function () {
+  const Domains = getElement('domains').value;
+  const Email = getElement('email').value;
+  const Verification_Method = document.querySelector('input:checked').value;
+  const Agreement = getElement('checkbox').checked;
+  CreateOrder(Domains, Email, Verification_Method, Agreement, this);
+};
+
+function showHTTPVerificationUI(jsonObject, domains) {
+  loadView('Views/Http_Verification.html', function (html) {
+    custom_content.innerHTML = html;
+
+    getElement('domains').innerText = "Let's verify that you own: " + domains;
+
+    const btn_icon = document.createElement('i');
+    btn_icon.classList.add('fa-solid', 'fa-cloud-arrow-down');
+
+    const jsonArray = jsonObject['http_challenges'];
+    for (let i = 0; i < jsonArray.length; i++) {
+      const object = jsonArray[i];
+
+      const btn_download = document.createElement('a');
+      btn_download.classList.add('button-download');
+      btn_download.setAttribute('href', 'data:text/file,' + encodeURIComponent(object['contents']));
+      btn_download.setAttribute('download', object['file_name']);
+      btn_download.append(btn_icon.cloneNode(true), 'Download File ' + (i + 1));
+      getElement('btn_container').appendChild(btn_download);
+
+      const li = document.createElement('li');
+      const link = document.createElement('a');
+      link.setAttribute('target', '_blank');
+      link.innerText = object['verification_link'];
+      link.href = object['verification_link'];
+      li.appendChild(link);
+      getElement('links_container').appendChild(li);
+    }
+
+    getElement('btn_verify').onclick = function () {
+      verifyOrder(jsonObject['order_id'], jsonObject['email'], jsonObject['challenge_type'], this);
+    };
+  });
+}
+
+function showDNSVerificationUI(jsonObject, domains) {
+  loadView('Views/Dns_Verification.html', function (html) {
+    custom_content.innerHTML = html;
+
+    getElement('domains').innerText = "Let's verify that you own: " + domains;
+
+    const tbody = getElement('dns_records');
+    const jsonArray = jsonObject['dns_challenges'];
+    for (let i = 0; i < jsonArray.length; i++) {
+      const object = jsonArray[i];
+      const row = tbody.insertRow(i);
+      row.insertCell(0).innerHTML = object['name'];
+      row.insertCell(1).innerHTML = object['value'];
+    }
+
+    getElement('btn_verify').onclick = function () {
+      verifyOrder(jsonObject['order_id'], jsonObject['email'], jsonObject['challenge_type'], this);
+    };
+  });
+}
+
+function showFinalUI(jsonObject) {
+  loadView('Views/Download_Certificate.html', function (html) {
+    custom_content.innerHTML = html;
+
+    getElement('certificate').innerHTML = jsonObject['certificate'];
+    getElement('private_key').innerHTML = jsonObject['private_key'];
+    getElement('ca_bundle').innerHTML = jsonObject['ca_bundle'];
+
+    const btn_download_crt = getElement('btn_download_crt');
+    const btn_download_pvt_key = getElement('btn_download_pvt_key');
+    const btn_download_ca_bundle = getElement('btn_download_ca_bundle');
+
+    btn_download_crt.setAttribute('href', 'data:text/file,' + encodeURIComponent(jsonObject['certificate']));
+    btn_download_crt.setAttribute('download', 'certificate.crt');
+
+    btn_download_pvt_key.setAttribute('href', 'data:text/file,' + encodeURIComponent(jsonObject['private_key']));
+    btn_download_pvt_key.setAttribute('download', 'private.key');
+
+    btn_download_ca_bundle.setAttribute('href', 'data:text/file,' + encodeURIComponent(jsonObject['ca_bundle']));
+    btn_download_ca_bundle.setAttribute('download', 'ca_bundle.crt');
+  });
+}
+
+function CreateOrder(domains, email, verification_method, agreement, button) {
+  if (isEmpty(domains)) {
+    showDialog('Please enter domains separated by comma');
+    return;
+  }
+  if (isEmpty(email)) {
+    showDialog('Please provide your email for creating a account');
+    return;
+  }
+  if (agreement === false) {
+    showDialog("Accept let's encrypt subscriber agreement to proceed");
+    return;
+  }
+
+  button.disabled = true;
+  showProgressbar();
+
+  const formData = new FormData();
+  formData.set('domains', domains);
+  formData.set('email', email);
+  formData.set('challenge_type', verification_method);
+
+  const request = new XMLHttpRequest();
+  request.open('POST', 'Api/Order/Create_Order.php');
+  request.onreadystatechange = function () {
+    if (request.readyState === 4) {
+      button.disabled = false;
+      hideProgressbar();
+
+      if (request.status === 200) {
+        const jsonObject = JSON.parse(request.response);
+
+        if (jsonObject['success'] === true) {
+          if (jsonObject['data']['challenge_type'] === 'HTTP') {
+            showHTTPVerificationUI(jsonObject['data'], domains);
+          } else if (jsonObject['data']['challenge_type'] === 'DNS') {
+            showDNSVerificationUI(jsonObject['data'], domains);
+          }
+        } else {
+          showDialog(jsonObject['error']['msg']);
+        }
+      }
+    }
+  };
+  request.send(formData);
+}
+
+function verifyOrder(order_id, email, challenge_type, button) {
+  button.disabled = true;
+  showProgressbar();
+
+  const formData = new FormData();
+  formData.set('order_id', order_id);
+  formData.set('email', email);
+  formData.set('challenge_type', challenge_type);
+
+  const request = new XMLHttpRequest();
+  request.open('POST', 'Api/Validate/Verify_Order.php');
+  request.onreadystatechange = function () {
+    if (request.readyState === 4) {
+      button.disabled = false;
+      hideProgressbar();
+
+      if (request.status === 200) {
+        const jsonObject = JSON.parse(request.response);
+
+        if (jsonObject['success'] === true) {
+          showFinalUI(jsonObject['data']);
+        } else {
+          showDialog(jsonObject['error']['msg']);
+        }
+      }
+    }
+  };
+  request.send(formData);
+}
+
+function showProgressbar() {
+  getElement('progressbar').classList.remove('d-none');
+}
+function hideProgressbar() {
+  getElement('progressbar').classList.add('d-none');
+}
+function showDialog(msg, is_error = true) {
+  const dialog = getElement('dialog');
+  dialog.classList.remove('d-none');
+
+  const dialog_title = dialog.querySelector('.dialog-title');
+  if (is_error === true) {
+    dialog_title.innerHTML = 'Error';
+  } else {
+    dialog_title.innerHTML = 'Success';
+  }
+
+  dialog.querySelector('.dialog-msg').innerHTML = msg;
+  dialog.querySelector('.btn-dismiss').onclick = function () {
+    dialog.classList.add('d-none');
+  };
+}
+function getElement(id) {
+  return document.getElementById(id);
+}
+function isEmpty(string) {
+  return string === '';
+}
+
+function loadView(view, callback) {
+  showProgressbar();
+  const request = new XMLHttpRequest();
+  request.open('GET', view, true);
+  request.onreadystatechange = function () {
+    if (request.readyState === 4 && request.status === 200) {
+      callback(request.responseText);
+      hideProgressbar();
+    }
+  };
+  request.send();
+}

@@ -3,7 +3,7 @@ import node_openssl from 'node-openssl-cert';
 //Initialize openssl library
 const openssl = new node_openssl();
 
-class sslTools {
+class Ssltools {
   //No need declaring it as it is not needed
   //constructor() {}
 
@@ -120,5 +120,4 @@ class sslTools {
   }
 }
 
-
-export default sslTools;
+export default Ssltools;

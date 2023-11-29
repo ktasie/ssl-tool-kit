@@ -1,0 +1,44 @@
+extends base
+
+block content
+    // Content Start
+    #custom_content.col-lg-6.custom-content
+        h1 
+            i.fa-solid.fa-gears
+            |  Generator
+        h3.mt-3.mb-3
+            | CSR, Private Key and Self Signed Certificate triplet generator (Wildcard domains can be included).
+        label(for='domains') Enter domain name(s)*
+        input#domains.form-control.mt-1(placeholder='Type the FQDN of the domain')
+        span.helper-text Use *.example.com for Wildcard domains
+
+        label(for='country') Enter country name*
+        input#country.form-control.mt-1(placeholder='NG')
+        span.helper-text Two letter country abbreviation compliant with ISO 3166-2
+
+        label(for='state') Enter name of state*
+        input#state.form-control.mt-1(placeholder='FCT')
+
+        label(for='locality') Enter locality name*
+        input#locality.form-control.mt-1(placeholder='Abuja')
+        
+        label(for='organization') Enter organization name*
+        input#organization.form-control.mt-1(placeholder='Galaxy Backbone Limited')
+        span.helper-text Full name of the company
+
+        label(for='unit') Enter organizational unit name*
+        input#unit.form-control.mt-1(placeholder='Cloud Operations')
+        
+        label.mt-3(for='email') Enter your Email*
+        input#email.form-control.mt-1(placeholder='youremail@gmail.com')
+        br
+        .d-flex.mt-4.mb-2.justify-content-start.align-items-center
+            input#checkbox(type='checkbox')
+            label.ms-2.text-agreement(for='checkbox')
+            | Encrypt Private Key - PKCS #8 (optional)
+        hr
+        button#btn_generate_ssl.custom-button.w-100.mt-2 
+            i.fa-solid.fa-gears.fa-beat
+            | Generate
+    // Content End
+    script(src='./assets/script.js' type='module')

@@ -1,0 +1,53 @@
+doctype html
+head
+  meta(http-equiv='Content-Type' content='text/html; charset=UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  link(type='image/png' sizes='96x96' rel='icon' href='./assets/favicon.png')
+  // Primary Meta Tags
+  title SSL Tools | Generate CSR, Privatekey and Certificates
+  meta(name='title' content='Generate CSR, Privatekey and Certificates')
+  meta(name='description' content='Generate CSR, Privatekey and Certificates.')
+  // Open Graph / Facebook
+  meta(property='og:type' content='website')
+  meta(property='og:url' content='TODO')
+  meta(property='og:title' content='Generate CSR, Privatekey and Certificates')
+  meta(property='og:description' content='Generate CSR, Privatekey and Certificates')
+  meta(property='og:image' content='TODO')
+  // Twitter
+  meta(property='twitter:card' content='summary')
+  meta(property='twitter:url' content='TODO')
+  meta(property='twitter:title' content='Generate CSR, Privatekey and Certificates')
+  meta(property='twitter:description' content='Generate CSR, Privatekey and Certificates')
+  meta(property='twitter:image' content='TODO')
+  // Stylesheets
+  //link(rel='stylesheet' href='./assets/font-awesome.min.css' crossorigin='anonymous' referrerpolicy='no-referrer')
+  link(rel='stylesheet' href='./assets/bootstrap.min.css')
+  link(rel='stylesheet' href='./assets/Free_SSL.css')
+  script(src='https://kit.fontawesome.com/77cca89115.js' crossorigin='anonymous')
+// Navbar Start
+include _header
+// Navbar End
+
+// Content Start
+.container.mt-5.mb-5
+    .row.justify-content-center.p-3.p-lg-0
+      include _ads-left
+      block content
+      include _ads-right
+// Content End
+
+// Progressbar Start
+#progressbar.progress-bar.d-none
+  .progress-wrapper
+    .spinner-border
+// Progressbar End
+// Dialog Start
+#dialog.dialog.d-none
+  .dialog-wrapper
+    span.dialog-title
+    span.dialog-msg
+    .dialog-split
+    button.btn-dismiss Dismiss
+// Dialog End
+script(src='./assets/bootstrap.min.js')
+

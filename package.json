@@ -1,19 +1,20 @@
 {
-  "name": "ssl-tools-app",
+  "name": "SSL tools",
   "version": "1.0.0",
   "type": "module",
   "description": "",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "test": "ndb app.js"
+    "debug": "ndb app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "node-openssl-cert": "^0.1.42"
+    "node-openssl-cert": "^0.1.42",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "eslint": "^8.54.0",
@@ -24,6 +25,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-security": "^1.7.1",
+    "morgan": "^1.10.0",
     "prettier": "^3.1.0"
   },
   "engines": {

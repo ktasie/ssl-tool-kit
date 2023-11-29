@@ -1,4 +1,4 @@
-import sslTools from '../model/sslTools.js';
+import Ssltools from '../model/sslTools.js';
 
 export default async function csrGenerator(req, res, next) {
   try {
@@ -12,8 +12,20 @@ export default async function csrGenerator(req, res, next) {
       emailAddress,
     } = req.body;
 
+    if (
+      commonName === '' ||
+      countryName === '' ||
+      stateOrProvinceName === '' ||
+      localityName === '' ||
+      organizationName === '' ||
+      organizationalUnitName === '' ||
+      emailAddress === ''
+    ) {
+      throw new Error('All fields are required!');
+    }
+
     // initialize ssl tools object
-    const tools = new sslTools();
+    const tools = new Ssltools();
 
     //Generate privatekey
     await tools.generateUnencryptedPrivatekey();

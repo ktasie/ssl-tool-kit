@@ -1,0 +1,32 @@
+extends base
+
+block content
+    // Content Start
+    #custom_content.col-lg-6.custom-content
+        h1 Generator
+        h3.mt-3.mb-3
+            | Your SSL Certificate Is Generated!
+        p Recall this certificate is valid for 364 days!
+        button.custom-button.w-100.mt-2 
+            i.fa-solid.fa-cloud-arrow-down  
+            | Download Zip File
+        br
+        hr
+        p Command: #{data.csr.cmd.command}
+        textarea.form-control.mt-1(cols='60' rows='10' readonly)= data.csr.csr 
+        span.helper-text CSR
+        br
+        textarea.form-control.mt-1(cols='60' rows='10' readonly)= data.key 
+        span.helper-text PRIVATE KEY
+        br
+        textarea.form-control.mt-1(cols='60' rows='10' readonly) ** under development **
+        span.helper-text CERTIFICATE (SELF-SIGNED)
+        
+        br
+        
+        hr
+        button.custom-button.w-100.mt-2 
+            i.fa-solid.fa-cloud-arrow-down  
+            | Download Zip File
+        
+    // Content End
