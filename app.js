@@ -22,13 +22,14 @@ app.set('view engine', 'pug');
 // Routes
 
 app.use('/', viewRoutes);
+app.get('/convert', (req, res) => {
+  res.status(200).render('sslConverter');
+});
 app.use('/api/v1', sslRoutes);
 
 app.all('*', errorController);
 
-const port = process.env.PORT || 3000;
 
-// start webserver on $ports
-app.listen(`${port}`, () => {
-  console.log(`App is running on port ${port}`);
-});
+
+export default app;
+

@@ -2,48 +2,43 @@ extends base
 
 block content
     // Content Start
-    .container.mt-5.mb-5
-        .row.justify-content-center.p-3.p-lg-0
-            .col-lg-3.p-0.m-0
-                .adview.me-lg-3.mt-lg-5.mb-4.mb-lg-0
-                    // Place your ad codes here
-                    .ad-placeholder
-                        | Place 
-                        br
-                        |               Your 
-                        br
-                        | Ad Here
-            #custom_content.col-lg-6.custom-content
-                h1 CSR Generator
-                h3.mt-3.mb-3
-                    | Create a Free Let&apos;s Encrypt SSL Certificate in a few minutes (including Wildcard SSL).
-                label(for='domains') Enter domain name(s)*
-                input#domains.form-control.mt-1(placeholder='example.com, www.example.com')
-                span.helper-text Use *.example.com for Wildcard SSL
-                label.mt-3(for='email') Enter your Email*
-                input#email.form-control.mt-1(placeholder='youremail@gmail.com')
-                label.mt-3(for='verification_method') Verification Method*
-                #verification_method.d-flex.gap-2.mt-1.justify-content-start.align-items-center
-                    input#http(checked='' type='radio' name='challenge' value='HTTP')
-                    label(for='http') HTTP
-                    br
-                    input#dns(type='radio' name='challenge' value='DNS')
-                    label(for='dns') DNS
-                    br
-                .d-flex.mt-4.mb-2.justify-content-start.align-items-center
-                    input#checkbox(type='checkbox')
-                    label.ms-2.text-agreement(for='checkbox')
-                    | Accept
-                    a(target='_blank' href='https://letsencrypt.org/documents/LE-SA-v1.3-September-21-2022.pdf') Let&apos;s Encrypt Subscriber Agreement (pdf)*
-                hr
-                button#btn_generate_ssl.custom-button.w-100.mt-2 Generate Free SSL
-            .col-lg-3.p-0.m-0
-                .adview.d-none.d-lg-block.ms-lg-3.mt-lg-5
-                    // Place your ad codes here
-                    .ad-placeholder
-                        | Place 
-                        br
-                        |               Your 
-                        br
-                        | Ad Here
-            // Content End
+    #custom_content.col-lg-6.custom-content
+        h1 
+            i.fa-solid.fa-gears
+            |  PEM to PKCS#12
+        h3.mt-3.mb-3
+            | The goal of this tool is to provide web GUI for basic x509v3 certificates conversion operations..
+        label#certLabel(for='cert' style='cursor: pointer; font-weight: bold; ') 
+            i.fa-solid.fa-certificate(style='color:green') 
+            span(style='color:#3f51b5')  Attach Certificate File *  
+            input#cert(type='file' style='display: none;')
+        span#description()
+        br
+        br
+        label#certLabel(for='cert' style='cursor: pointer; font-weight: bold') 
+            i.fa-solid.fa-key(style='color:green')   
+            span(style='color:#3f51b5')  Attach key file * 
+            input#cert(type='file' style='display: none;')
+        span#description(style='color: #3f51b5; border-bottom: solid')
+        br
+        br
+        label#certLabel(for='cert' style='cursor: pointer; font-weight: bold; ') 
+            i.fa-solid.fa-paperclip(style='color:green')   
+            span(style='color:#3f51b5')  Attach Bundle File  
+            input#cert(type='file' style='display: none;')
+        span#description(style='color: #3f51b5; border-bottom: solid')
+        br
+        
+        
+        input#domains.form-control.mt-2(type='password' placeholder='Type a password')
+        
+
+       
+        
+        
+        hr
+        button#btn_generate_ssl.custom-button.w-100.mt-2 
+            i.fa-solid.fa-gears.fa-beat
+            | Convert
+    // Content End
+    script(src='./assets/convert.js' type='module')

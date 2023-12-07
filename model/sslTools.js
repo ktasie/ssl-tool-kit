@@ -99,10 +99,11 @@ class Ssltools {
       this.selfSign = cert;
     }
     if (key !== undefined) {
-      this.unencryptkey = cert;
+      this.unencryptkey = key;
     }
     return new Promise((resolve, reject) => {
       //console.log(this.selfSign);
+      //openssl.checkRSAMatch(,
       openssl.createPKCS12(
         this.selfSign,
         this.unencryptkey,
@@ -118,6 +119,8 @@ class Ssltools {
       );
     });
   }
+
+  
 }
 
 export default Ssltools;
