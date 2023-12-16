@@ -8,37 +8,34 @@ block content
             |  PEM to PKCS#12
         h3.mt-3.mb-3
             | The goal of this tool is to provide web GUI for basic x509v3 certificates conversion operations..
-        label#certLabel(for='cert' style='cursor: pointer; font-weight: bold; ') 
-            i.fa-solid.fa-certificate(style='color:green') 
-            span(style='color:#3f51b5')  Attach Certificate File *  
-            input#cert(type='file' style='display: none;')
-        span#description()
+        label Attach Certificate File *
+            .form-upload
+                i.fa-solid.fa-paperclip
+                span.bold  Add file         
+                input#form-upload__input.form-upload__input(type='file' data-attach='certifiicate')
+        .form-upload_file(data-attach='certifiicate')
         br
+        label Attach Key File *
+            .form-upload
+                    i.fa-solid.fa-paperclip
+                    span.bold  Add file            
+                    input.form-upload__input(type='file' data-attach='key')
+        .form-upload_file(data-attach='key')
         br
-        label#certLabel(for='cert' style='cursor: pointer; font-weight: bold') 
-            i.fa-solid.fa-key(style='color:green')   
-            span(style='color:#3f51b5')  Attach key file * 
-            input#cert(type='file' style='display: none;')
-        span#description(style='color: #3f51b5; border-bottom: solid')
+        label Attach Bundle File (optional)
+            .form-upload
+                    i.fa-solid.fa-paperclip
+                    span.bold  Add file            
+                    input.form-upload__input(type='file' data-attach='bundle')
+        .form-upload_file(data-attach='bundle')
         br
-        br
-        label#certLabel(for='cert' style='cursor: pointer; font-weight: bold; ') 
-            i.fa-solid.fa-paperclip(style='color:green')   
-            span(style='color:#3f51b5')  Attach Bundle File  
-            input#cert(type='file' style='display: none;')
-        span#description(style='color: #3f51b5; border-bottom: solid')
-        br
-        
-        
+        label Password *
         input#domains.form-control.mt-2(type='password' placeholder='Type a password')
-        
-
-       
-        
-        
         hr
         button#btn_generate_ssl.custom-button.w-100.mt-2 
             i.fa-solid.fa-gears.fa-beat
             | Convert
+
+
     // Content End
     script(src='./assets/convert.js' type='module')

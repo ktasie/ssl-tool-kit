@@ -1,4 +1,3 @@
-import fs from 'fs';
 import Ssltools from '../model/sslTools.js';
 
 export default async (req, res, next) => {

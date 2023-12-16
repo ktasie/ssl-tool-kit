@@ -1,3 +1,5 @@
+//import {JSZip} from './jszip.min.js';
+
 // Declare all DOM variables
 const domStrings = {
   domainName: document.querySelector('#domains'),
@@ -58,9 +60,8 @@ const submitCSR = async () => {
     const resp = await fetch('/api/v1/csr', reqOptions);
     const dataObj = await resp.json();
 
-    const dataString = JSON.stringify(dataObj);
-
     if (dataObj.status === 'success') {
+      const dataString = JSON.stringify(dataObj);
       //Redirect to download certificate page.
       //console.log(dataString);
       // disable spinner

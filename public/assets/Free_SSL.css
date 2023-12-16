@@ -426,3 +426,35 @@ textarea {
 p {
   color: var(--black_40);
 }
+
+/* Added by KC */
+label {
+  font-weight: bold;
+}
+.form-upload {
+  border: 1px dashed #cec1c1;
+  border-radius: 4px;
+  padding: 9px;
+  margin-top: 10px;
+  cursor: pointer;
+  /* text-align: center;  */
+  /* color: #e5e5e5;  */
+  font-weight: normal;
+  background-color: white;
+  font-size: 18px;
+}
+
+.form-upload > .form-upload__input {
+  opacity: 0;
+  /* display: none; */
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: 700;
+  color: var(--green)
+}
+
+.form-upload_file{
+  color: var(--color_primary)
+}

@@ -2,6 +2,8 @@ extends base
 
 block content
     // Content Start
+    script(src='./assets/jszip.min.js')
+    script(src='./assets/FileSaver.min.js')    
     #custom_content.col-lg-6.custom-content
         h1 Generator
         h3.mt-3.mb-3
@@ -13,13 +15,14 @@ block content
         br
         hr
         p Command: #{data.csr.cmd.command}
-        textarea.form-control.mt-1(cols='60' rows='10' readonly)= data.csr.csr 
+        //input#domain(type='hidden' value=`${data.commonName}`)
+        textarea#csr.form-control.mt-1(cols='30' rows='8' readonly)= data.csr.csr 
         span.helper-text CSR
         br
-        textarea.form-control.mt-1(cols='60' rows='10' readonly)= data.key 
-        span.helper-text PRIVATE KEY
+        textarea#key.form-control.mt-1(cols='50' rows='8' readonly)= data.key 
+        pan.helper-text PRIVATE KEY
         br
-        textarea.form-control.mt-1(cols='60' rows='10' readonly) ** under development **
+        textarea.form-control.mt-1(cols='50' rows='8' readonly) ** under development **
         span.helper-text CERTIFICATE (SELF-SIGNED)
         
         br
@@ -30,3 +33,20 @@ block content
             | Download Zip File
         
     // Content End
+    script(type='text/javascript').
+        document.querySelector('#custom_content').addEventListener('click', function (event) {
+                        
+            if(event.target.closest('button')){
+                <!-- Read values from the form -->
+                const csr = document.querySelector('#csr').value;
+                const key = document.querySelector('#key').value;
+
+                <!-- Generate zip file for download -->
+                const zip = new JSZip();
+                zip.file('cert.csr', csr);
+                zip.file('priv.key', key);
+                zip.generateAsync({ type: 'blob' }).then((content) => {
+                    saveAs(content, 'certificate.zip');
+                });
+            }
+        });
