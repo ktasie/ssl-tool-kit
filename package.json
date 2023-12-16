@@ -5,6 +5,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "prod": "node server.js",
     "dev": "nodemon server.js",
     "debug": "ndb app.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --watch"
