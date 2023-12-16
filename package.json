@@ -35,6 +35,6 @@
     "supertest": "^6.3.3"
   },
   "engines": {
-    "node": "^10"
+    "node": "18"
   }
 }
