@@ -1,5 +1,3 @@
-//import {JSZip} from './jszip.min.js';
-
 // Declare all DOM variables
 const domStrings = {
   domainName: document.querySelector('#domains'),
@@ -15,12 +13,14 @@ const domStrings = {
   dialogTitle: document.querySelector('.dialog-title'),
   dialogMsg: document.querySelector('.dialog-msg'),
   btnDismiss: document.querySelector('.btn-dismiss'),
+  myCheck: document.querySelector('#myCheck'),
+  myPassword: document.querySelector('#myPassword')
 };
 
-function redirectPostForm(tag, method, url, enctype, dataString) {
+function redirectPostForm(tag, method, url, dataString) {
   const form = document.createElement(tag);
   form.method = method;
-  form.enctype = enctype;
+  form.enctype = 'application/x-www-form-urlencoded';
   form.action = url;
   const hiddenEl = document.createElement('input');
   hiddenEl.type = 'hidden';
@@ -34,10 +34,10 @@ function redirectPostForm(tag, method, url, enctype, dataString) {
 // Submit the CSR to the backend endpoint
 const submitCSR = async () => {
   try {
-    //Load spinner
+    // Load spinner
     domStrings.progressBar.classList.remove('d-none');
 
-    //Stringify form inputs
+    // Stringify form inputs
     const raw = JSON.stringify({
       commonName: domStrings.domainName.value,
       countryName: domStrings.countryName.value,
@@ -46,15 +46,16 @@ const submitCSR = async () => {
       organizationName: domStrings.organizationName.value,
       organizationalUnitName: domStrings.unitName.value,
       emailAddress: domStrings.email.value,
+      password: domStrings.myPassword.value
     });
 
-    //console.log(raw);
+    // console.log(raw);
 
     const reqOptions = {
       method: 'POST',
       headers: { 'content-Type': 'application/json' },
       body: raw,
-      redirect: 'follow',
+      redirect: 'follow'
     };
 
     const resp = await fetch('/api/v1/csr', reqOptions);
@@ -62,25 +63,19 @@ const submitCSR = async () => {
 
     if (dataObj.status === 'success') {
       const dataString = JSON.stringify(dataObj);
-      //Redirect to download certificate page.
-      //console.log(dataString);
-      // disable spinner
-      //domStrings.progressBar.classList.add('d-none');
+      // Redirect to download certificate page.
+      // console.log(dataString);
 
-      redirectPostForm('form', 'POST', '/downloadcsr', 'application/x-www-form-urlencoded', dataString);
-    } else if (dataObj.status === 'Error') {
-      //Generate a popup error
-      //console.log(dataObj.message);
+      redirectPostForm('form', 'POST', '/download-cert', dataString);
+    } else if (dataObj.status === 'fail') {
       throw new Error(`${dataObj.message}`);
     }
   } catch (err) {
     domStrings.progressBar.classList.add('d-none');
     domStrings.dialog.classList.remove('d-none');
-    //domStrings.dialogTitle.textContent = `${err.status}`;
-    domStrings.dialogTitle.textContent = 'Error';
+    // domStrings.dialogTitle.textContent = `${err.status}`;
+    domStrings.dialogTitle.textContent = 'Fail';
     domStrings.dialogMsg.textContent = `${err.message}`;
-
-    console.log(err.message);
   }
 };
 
@@ -91,3 +86,11 @@ const closeDialog = () => {
 // DOM listener
 domStrings.submitBtn.addEventListener('click', submitCSR);
 domStrings.btnDismiss.addEventListener('click', closeDialog);
+domStrings.myCheck.addEventListener('click', function () {
+  if (this.checked) {
+    domStrings.myPassword.classList.remove('d-none');
+  } else {
+    domStrings.myPassword.classList.add('d-none');
+    domStrings.myPassword.value = '';
+  }
+});

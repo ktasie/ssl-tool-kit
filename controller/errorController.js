@@ -3,7 +3,7 @@ const handleDevErrors = (err, res) => {
     status: err.status,
     error: err,
     message: err.message,
-    stack: err.stack,
+    stack: err.stack
   });
 };
 
@@ -11,12 +11,12 @@ const handleProdErrors = (err, res) => {
   if (err.isOperational) {
     res.status(err.statusCode).json({
       status: err.status,
-      message: err.message,
+      message: err.message
     });
   } else {
     res.status(500).json({
       status: 'Error',
-      message: 'Something went very wrong',
+      message: 'Something went very wrong'
     });
   }
 };

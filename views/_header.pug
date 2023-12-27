@@ -8,9 +8,9 @@ nav.navbar.navbar-expand-lg.bg-white
     #navbarSupportedContent.collapse.navbar-collapse
       ul.navbar-nav.me-auto.mb-2.mb-lg-0
         li.nav-item
-          a.nav-link.active(aria-current='page' href='/') CSR Generator
+          a.nav-link.active(aria-current='page' href='/' class=(name === 'index' ? 'active':undefined)) CSR Generator
         li.nav-item
-          a.nav-link(aria-current='page' href='/convert') SSL Converter
+          a.nav-link(aria-current='page' href='/convert' class=(name === 'convert' ? 'active':undefined)) SSL Converter
         li.nav-item
           a.nav-link(aria-current='page' href='#') Key Matcher
         li.nav-item

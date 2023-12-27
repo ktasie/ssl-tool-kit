@@ -33,9 +33,10 @@ block content
         input#email.form-control.mt-1(placeholder='youremail@gmail.com')
         br
         .d-flex.mt-4.mb-2.justify-content-start.align-items-center
-            input#checkbox(type='checkbox' disabled)
+            input#myCheck(type='checkbox')
             label.ms-2.text-agreement(for='checkbox')
-            | Encrypt Private Key - PKCS #8 (disabled)
+            | Encrypt Private Key - PKCS #8
+        input#myPassword.form-control.mt-1.d-none(type='password' placeholder='Type your password')
         hr
         button#btn_generate_ssl.custom-button.w-100.mt-2 
             i.fa-solid.fa-gears.fa-beat

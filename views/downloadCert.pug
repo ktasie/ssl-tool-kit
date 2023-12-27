@@ -14,15 +14,14 @@ block content
             | Download Zip File
         br
         hr
-        p Command: #{data.csr.cmd.command}
-        //input#domain(type='hidden' value=`${data.commonName}`)
-        textarea#csr.form-control.mt-1(cols='30' rows='8' readonly)= data.csr.csr 
+        p Command: #{data.cert.cmd.command}
+        textarea#csr.form-control.mt-1(cols='30' rows='8' readonly)= data.csr 
         span.helper-text CSR
         br
         textarea#key.form-control.mt-1(cols='50' rows='8' readonly)= data.key 
         pan.helper-text PRIVATE KEY
         br
-        textarea.form-control.mt-1(cols='50' rows='8' readonly) ** under development **
+        textarea#cert.form-control.mt-1(cols='50' rows='8' readonly)= data.cert.cert
         span.helper-text CERTIFICATE (SELF-SIGNED)
         
         br
@@ -40,11 +39,13 @@ block content
                 <!-- Read values from the form -->
                 const csr = document.querySelector('#csr').value;
                 const key = document.querySelector('#key').value;
+                const cert = document.querySelector('#cert').value;
 
                 <!-- Generate zip file for download -->
                 const zip = new JSZip();
                 zip.file('cert.csr', csr);
                 zip.file('priv.key', key);
+                zip.file('cert.crt', cert);
                 zip.generateAsync({ type: 'blob' }).then((content) => {
                     saveAs(content, 'certificate.zip');
                 });
