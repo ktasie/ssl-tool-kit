@@ -1,0 +1,24 @@
+extends base
+
+block content
+    // Content Start   
+    #custom_content.col-lg-6.custom-content
+        h1 
+            i.fa-solid.fa-gears
+            |  Matcher
+        h3.mt-3.mb-3
+            | Certificate and Private Key Matcher
+        p 
+        textarea#key.form-control.mt-1(cols='30' rows='8') 
+        pan.helper-text PRIVATE KEY
+        br
+        textarea#certificate.form-control.mt-1(cols='50' rows='8' )
+        span.helper-text CERTIFICATE
+        br
+        hr
+        button#match.custom-button.w-100.mt-2 
+            i.fa-solid.fa-gears.fa-beat
+            | Match
+        
+    // Content End
+    script(src='./assets/match.js' type='module')

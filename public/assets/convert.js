@@ -62,7 +62,7 @@ const submitForm = async function (event) {
 
       // Rename and convert convert btn
       // domStrings.button.innerHTML = html;
-      domStrings.paragraphEl.textContent = result.data.cmd.command[0]
+      domStrings.paragraphEl.textContent = result.data.cmd.command[0];
       const zip = new JSZip();
 
       zip.file(`${pfxName}.pfx`, result.data.pfx.data);

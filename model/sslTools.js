@@ -46,7 +46,7 @@ class SSLtools {
     const csroptions = {
       hash: 'sha512',
       subject: {
-        commonName,
+        commonName: [commonName, `www.${commonName}`],
         countryName,
         stateOrProvinceName,
         localityName,
@@ -55,6 +55,19 @@ class SSLtools {
         emailAddress
       },
       extensions: {
+        basicConstraints: {
+          critical: true,
+          CA: true,
+          pathlen: 1
+        },
+        keyUsage: {
+          // critical: false,
+          usages: ['digitalSignature', 'keyEncipherment']
+        },
+        extendedKeyUsage: {
+          critical: true,
+          usages: ['serverAuth', 'clientAuth']
+        },
         SANs: {
           DNS: [commonName, `www.${commonName}`]
         }
@@ -66,12 +79,17 @@ class SSLtools {
     }
 
     return new Promise((resolve, reject) => {
-      openssl.generateCSR(csroptions, key, password, function (err, csr, cmd) {
-        // Inject csr into Obj
-        // this.csr = csr;
-        if (err) reject(err);
-        resolve({ csr, cmd });
-      });
+      openssl.generateCSR(
+        csroptions,
+        key,
+        password,
+        function (err, csr, cmd) {
+          // Inject csr into Obj
+          this.csrOptions = csroptions;
+          if (err) reject(err);
+          resolve({ csr, cmd });
+        }.bind(this)
+      );
     });
   }
 
@@ -81,8 +99,9 @@ class SSLtools {
     }
     return new Promise((resolve, reject) => {
       // console.log(this);
-
-      openssl.selfSignCSR(csr, { days: 365 }, key, password, function (err, cert, cmd) {
+      this.csrOptions.days = 365;
+      // openssl.selfSignCSR(csr, { days: 365 }, key, password, function (err, cert, cmd) {
+      openssl.selfSignCSR(csr, this.csrOptions, key, password, function (err, cert, cmd) {
         // this.selfSign = cert;
         if (err) reject(err);
         resolve({ cert, cmd });
@@ -109,7 +128,14 @@ class SSLtools {
     });
   }
 
-  matchRSACert(key, cert) {}
+  matchRSACert(key, cert) {
+    return new Promise((resolve, reject) => {
+      openssl.checkRSAMatch(key, false, cert, function (err, result) {
+        if (err) reject(err);
+        resolve({ result });
+      });
+    });
+  }
 }
 
 export default SSLtools;

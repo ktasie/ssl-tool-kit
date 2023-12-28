@@ -14,14 +14,14 @@ block content
             | Download Zip File
         br
         hr
-        p Command: #{data.cert.cmd.command}
-        textarea#csr.form-control.mt-1(cols='30' rows='8' readonly)= data.csr 
+        p Command: #{dataObj.data.cert.cmd.command}
+        textarea#csr.form-control.mt-1(cols='30' rows='8' readonly)= dataObj.data.csr 
         span.helper-text CSR
         br
-        textarea#key.form-control.mt-1(cols='50' rows='8' readonly)= data.key 
+        textarea#key.form-control.mt-1(cols='50' rows='8' readonly)= dataObj.data.key 
         pan.helper-text PRIVATE KEY
         br
-        textarea#cert.form-control.mt-1(cols='50' rows='8' readonly)= data.cert.cert
+        textarea#cert.form-control.mt-1(cols='50' rows='8' readonly)= dataObj.data.cert.cert
         span.helper-text CERTIFICATE (SELF-SIGNED)
         
         br

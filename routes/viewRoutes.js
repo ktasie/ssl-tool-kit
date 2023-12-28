@@ -14,7 +14,10 @@ router
     const dataObj = JSON.parse(req.body.dataString);
     // dataObj.commonName = JSON.parse(req.body.commonName);
     // console.log(req.body.dataString);
-    res.render('downloadCert', dataObj);
+    res.render('downloadCert', {
+      name: 'index',
+      dataObj
+    });
   });
 
 router.get('/convert', (req, res) => {
@@ -25,7 +28,9 @@ router.get('/convert', (req, res) => {
 });
 
 router.get('/matcher', (req, res) => {
-  res.status(200).render('keyMatcher');
+  res.status(200).render('keyMatcher', {
+    name: 'matcher'
+  });
 });
 
 export default router;
