@@ -9,7 +9,7 @@ export const matchKeyToCert = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return next(new AppError('All fields are mandatory', 400));
-      //return next(errors.array());
+      // return next(errors.array());
     }
     /*
     if (!key || !certificate) {
@@ -19,11 +19,11 @@ export const matchKeyToCert = async (req, res, next) => {
 
     // const { key, certificate } = req.body;
     const tools = new SSLtools();
-    const resp = await tools.matchRSACert(key.trim(), certificate.trim());
+    const feedback = await tools.matchRSACert(key.trim(), certificate.trim());
 
     res.status(200).json({
       status: 'success',
-      data: resp,
+      data: feedback,
       message: 'Private key matches the certificate'
     });
   } catch (err) {
