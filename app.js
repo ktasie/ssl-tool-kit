@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'development') {
 app.disable('x-powered-by');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(helmet())
+app.use(helmet())
 // app.use(xss())
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
