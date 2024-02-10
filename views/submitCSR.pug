@@ -8,13 +8,13 @@ block content
             |  Generator
         h3.mt-3.mb-3
             | CSR, Private Key and Self Signed Certificate triplet generator (Wildcard domains can be included).
-        label(for='domains') Enter domain name(s)*
-        input#domains.form-control.mt-1(placeholder='Type the FQDN of the domain')
+        label(for='domains') Enter a single domain name (without www)*
+        input#domains.form-control.mt-1(placeholder='Type the domain without the WWW')
         span.helper-text Use *.example.com for Wildcard domains
 
         label(for='country') Enter country name*
         input#country.form-control.mt-1(placeholder='NG')
-        span.helper-text Two letter country abbreviation compliant with ISO 3166-2
+        span.helper-text Two letter country abbreviation compliant with ISO 3166-2. E.g US
 
         label(for='state') Enter name of state*
         input#state.form-control.mt-1(placeholder='FCT')

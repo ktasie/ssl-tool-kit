@@ -52,6 +52,9 @@ const compareKeys = async () => {
 
 const closeDialog = () => {
   domStrings.dialog.classList.add('d-none');
+  domStrings.key.value = '';
+  domStrings.certificate.value = '';
+  domStrings.paragraph.textContent = '';
 };
 
 domStrings.matchBtn.addEventListener('click', compareKeys);
