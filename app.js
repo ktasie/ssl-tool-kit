@@ -2,7 +2,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import express from 'express';
 import helmet from 'helmet';
-import xss from 'xss-clean';
 import morgan from 'morgan';
 
 import sslRoutes from './routes/sslRoutes.js';
@@ -21,8 +20,17 @@ if (process.env.NODE_ENV === 'development') {
 app.disable('x-powered-by');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(helmet())
-// app.use(xss())
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        /* ... */
+      },
+      reportOnly: true,
+    }
+  })
+);
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
