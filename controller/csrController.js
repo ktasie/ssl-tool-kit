@@ -1,8 +1,20 @@
+import os from 'os';
+import { matchedData, validationResult } from 'express-validator';
 import SSLtools from '../model/sslTools.js';
 import AppError from '../utils/appError.js';
 
 export default async function generateCSR(req, res, next) {
   try {
+    let errorString = '';
+    const errors = validationResult(req);
+    
+    if (!errors.isEmpty()) {
+      for (const el of errors.array()) {
+        errorString = `${errorString}${el.msg}${os.EOL}`;
+      }
+      return next(new AppError(`${errorString}`, 400));
+    }
+
     const {
       commonName,
       countryName,
@@ -12,19 +24,8 @@ export default async function generateCSR(req, res, next) {
       organizationalUnitName,
       emailAddress,
       password
-    } = req.body;
-
-    if (
-      !commonName ||
-      !countryName ||
-      !stateOrProvinceName ||
-      !localityName ||
-      !organizationName ||
-      !organizationalUnitName ||
-      !emailAddress
-    ) {
-      return next(new AppError('All fields are required!', 400))
-    }
+    } = matchedData(req);
+    
 
     // initialize ssl tools object
     const tools = new SSLtools();

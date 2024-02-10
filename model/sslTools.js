@@ -43,10 +43,19 @@ class SSLtools {
     key,
     password
   ) {
+    //Used to handle wildcard domains correctly.
+    if (commonName.startsWith('*')) {
+      commonName = [commonName];
+    } else {
+      commonName = [commonName, `www.${commonName}`];
+    }
+    
+
     const csroptions = {
       hash: 'sha512',
       subject: {
-        commonName: [commonName, `www.${commonName}`],
+        //commonName: [commonName, `www.${commonName}`],
+        commonName: commonName[0],
         countryName,
         stateOrProvinceName,
         localityName,
@@ -69,7 +78,8 @@ class SSLtools {
           usages: ['serverAuth', 'clientAuth']
         },
         SANs: {
-          DNS: [commonName, `www.${commonName}`]
+          //DNS: [commonName, `www.${commonName}`],
+          DNS: commonName
         }
       }
     };
